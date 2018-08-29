@@ -27,12 +27,22 @@ widthScreen = (GetSystemMetrics(0)-20)
 heightScreen = (GetSystemMetrics(1)-200)
 deel_heightScreen = (heightScreen/3)
 
-dict_links = {'sites': 'maps/all_sites.html',
+dict_links_maps = {'sites': 'maps/all_sites.html',
               'vLearnC':'maps/all_LearnC.html',
               'vWFS':'maps/all_WomenFS.html',
               'vCFS':'maps/all_ChildFS.html',
               'vWASH':'maps/all_WASH.html',
-              'vNC':'maps/all_NC.html'}
+              'vNC':'maps/all_NC.html',
+              'vHF':'maps/all_HF.html'}
+
+
+dict_links_boxplot = {'sites': 'https://plot.ly/~Eekhoorn234/15.embed',
+              'vLearnC':'https://plot.ly/~Eekhoorn234/0.embed',
+              'vWFS':'https://plot.ly/~Eekhoorn234/2.embed',
+              'vCFS':'https://plot.ly/~Eekhoorn234/4.embed',
+              'vWASH':'https://plot.ly/~Eekhoorn234/6.embed',
+              'vNC':'https://plot.ly/~Eekhoorn234/8.embed',
+              'vHF':'https://plot.ly/~Eekhoorn234/10.embed'}
 
 colors = {
     'background': '#FFFFFF',
@@ -40,18 +50,7 @@ colors = {
 }
 
 app.layout = html.Div(style={'backgroundColor': colors['background']},
-                             children=[html.Div(className="banner", 
-                                                children=[html.Div(className='container scalable', 
-                                                                   style={'textAlign':'left'}, 
-                                                                   children=[html.H2(html.A('Rohingya Refugee Camp Overview',
-                                                                                            style={'textAlign': 'left',
-                                                                                                   'color': 'white',
-                                                                                                   'fontFamily': 'verdana',
-                                                                                                   'paddingLeft': 0,
-                                                                                                   'paddingTop': 0,
-                                                                                                   'paddingRight': 0,
-                                                                                                   'marginTop':0}))])]),
-                                                         #html.A(html.Img(src="https://s3-us-west-1.amazonaws.com/plotly-tutorials/logo/new-branding/dash-logo-by-plotly-stripe-inverted.png"))
+                             children=[
                                         html.Div(className="body", children=[html.Div(dcc.RadioItems(id='select_maps',
                                                                                                     options=[{'label': 'Campsites ', 'value': 'sites'},
                                                                                                              {'label': 'Learning Centers ', 'value': 'vLearnC'},
@@ -93,46 +92,22 @@ app.layout = html.Div(style={'backgroundColor': colors['background']},
 
 
 
-
-"""
-
-app.layout = html.Div(style={'backgroundColor': colors['background']}, children=[
-    
-    html.H1(
-        children='Rohingya Refugee Camp Dashboard',
-        style={
-            'textAlign': 'center',
-            'color': colors['text'],
-            'fontFamily': 'verdana'
-            
-        }
-    ),
-
-    dcc.Graph(
-        id='example-graph-2',
-        figure={
-            'data': [
-                {'x': [1, 2, 3], 'y': [4, 1, 2], 'type': 'bar', 'name': 'SF'},
-                {'x': [1, 2, 3], 'y': [2, 4, 5], 'type': 'bar', 'name': u'Montréal'},
-            ],
-            'layout': {
-                'plot_bgcolor': colors['background'],
-                'paper_bgcolor': colors['background'],
-                'font': {
-                    'color': colors['text']
-                }
-            }
-        }
-    )
-])
-"""
-
 @app.callback(
     Output(component_id='map_folium', component_property='srcDoc'),
     [Input(component_id='select_maps', component_property='value')])
 def update_map(select_maps):
-    new_src = format(dict_links.get(select_maps))
+    new_src = format(dict_links_maps.get(select_maps))
     return open(new_src, 'r').read()
+
+@app.callback(
+    Output(component_id='boxplot', component_property='src'),
+    [Input(component_id='select_maps', component_property='value')])
+def update_boxplot(select_maps):
+    new_src = format(dict_links_boxplot.get(select_maps))
+    return new_src
+
+
+
 
 external_css = [
     # Normalize the CSS
