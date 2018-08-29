@@ -9,7 +9,7 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
-
+import pandas as pd
 import os
 import flask
 from win32api import GetSystemMetrics
@@ -22,6 +22,14 @@ server = app.server
 #                      'value': str(facility_type)}
 #                     for facility_type in FACILITY_TYPES]
 
+total_data = pd.read_csv("map_creation/total_data.csv")
+total_population = int(total_data["Pop_Prior_Aug_2017"].sum())
+total_facilities_LearnC = int(total_data['learning_centers_per_region'].sum())
+total_facilities_WomenFS = int(total_data["Women_Friendly_Space_per_region"].sum())
+total_facilities_ChildFS = int(total_data["Child_Friendly_Space_per_region"].sum())
+total_facilities_WASH = int(total_data["WASH_Infra_per_region"].sum())
+total_facilities_NC = int(total_data["nutrition_centers_per_region"].sum())
+total_facilities_HF = int(total_data["Health_Facility_per_region"].sum())
 
 widthScreen = (GetSystemMetrics(0)-20)
 heightScreen = (GetSystemMetrics(1)-200)
@@ -38,13 +46,13 @@ dict_links_maps = {'sites': 'maps/all_sites.html',
               'vNC':'maps/all_NC.html',
               'vHF':'maps/all_HF.html'}
 
-dict_links_numbers = {'sites': '0',
-              'vLearnC':'1',
-              'vWFS':'2',
-              'vCFS':'3',
-              'vWASH':'4',
-              'vNC':'5',
-              'vHF':'6'}
+dict_links_numbers = {'sites': total_population,
+              'vLearnC':total_facilities_LearnC,
+              'vWFS':total_facilities_WomenFS,
+              'vCFS':total_facilities_ChildFS,
+              'vWASH':total_facilities_WASH,
+              'vNC':total_facilities_NC,
+              'vHF':total_facilities_HF}
 
 dict_links_text = {'sites': 'People in Refugee Camps',
               'vLearnC':'Learning Centers',
@@ -69,6 +77,69 @@ dict_links_colours = {'sites': 'black',
               'vWASH':'blue',
               'vNC':'lightorange',
               'vHF':'red'}
+
+dict_links_percentage_sites = {
+        'sites':heightScreen,
+        'vLearnC':0,
+        'vWFS':0,
+        'vCFS':0,
+        'vWASH':0,
+        'vNC':0,
+        'vHF':0}
+
+dict_links_percentage_vLearnC = {
+        'sites':0,
+        'vLearnC':heightScreen,
+        'vWFS':0,
+        'vCFS':0,
+        'vWASH':0,
+        'vNC':0,
+        'vHF':0}
+
+dict_links_percentage_vWFS = {
+        'sites':0,
+        'vLearnC':0,
+        'vWFS':heightScreen,
+        'vCFS':0,
+        'vWASH':0,
+        'vNC':0,
+        'vHF':0}
+
+dict_links_percentage_vCFS = {
+        'sites':0,
+        'vLearnC':0,
+        'vWFS':0,
+        'vCFS':heightScreen,
+        'vWASH':0,
+        'vNC':0,
+        'vHF':0}
+
+dict_links_percentage_vWASH = {
+        'sites':0,
+        'vLearnC':0,
+        'vWFS':0,
+        'vCFS':0,
+        'vWASH':heightScreen,
+        'vNC':0,
+        'vHF':0}
+
+dict_links_percentage_vNC = {
+        'sites':0,
+        'vLearnC':0,
+        'vWFS':0,
+        'vCFS':0,
+        'vWASH':0,
+        'vNC':heightScreen,
+        'vHF':0}
+
+dict_links_percentage_vHF = {
+        'sites':0,
+        'vLearnC':0,
+        'vWFS':0,
+        'vCFS':0,
+        'vWASH':0,
+        'vNC':0,
+        'vHF':heightScreen}
 
 colors = {
     'background': '#FFFFFF',
@@ -129,7 +200,15 @@ app.layout = html.Div(style={'backgroundColor': colors['background']},
                                                                                                             html.Iframe(id='graph',src = 'https://plot.ly/~Eekhoorn234/10.embed',style={'border': 'none', 'align': 'center', 'width': '100%', 'height':threeeight_heightScreen})],style={'position':'relative', 'height':heightScreen},className='four columns'),
                                                                                         
                                                                                         html.Div(children=[
-                                                                                                           html.Iframe(id='map_folium',srcDoc = open('maps/all_sites.html', 'r').read(),style={'border': 'none', 'align': 'center', 'width': '100%', 'height':heightScreen})],
+                                                                                                #html.Iframe(id='map_folium',srcDoc = open(format(dict_links_maps.get('sites')), 'r').read(),style={'border': 'none', 'align': 'center', 'width': '100%', 'height':heightScreen}),
+                                                                                                html.Iframe(id='map_foliumsites',srcDoc = open(format(dict_links_maps.get('sites')), 'r').read(),style={'border': 'none', 'align': 'center', 'width': '100%', 'height':heightScreen}),
+                                                                                                html.Iframe(id='map_foliumLearnC',srcDoc = open(format(dict_links_maps.get('vLearnC')), 'r').read(),style={'border': 'none', 'align': 'center', 'width': '100%', 'height':0}),
+                                                                                                html.Iframe(id='map_foliumWomenFS',srcDoc = open(format(dict_links_maps.get('vWFS')), 'r').read(),style={'border': 'none', 'align': 'center', 'width': '100%', 'height':0}),
+                                                                                                html.Iframe(id='map_foliumChildFS',srcDoc = open(format(dict_links_maps.get('vCFS')), 'r').read(),style={'border': 'none', 'align': 'center', 'width': '100%', 'height':0}),
+                                                                                                html.Iframe(id='map_foliumWASH',srcDoc = open(format(dict_links_maps.get('vWASH')), 'r').read(),style={'border': 'none', 'align': 'center', 'width': '100%', 'height':0}),
+                                                                                                html.Iframe(id='map_foliumNC',srcDoc = open(format(dict_links_maps.get('vNC')), 'r').read(),style={'border': 'none', 'align': 'center', 'width': '100%', 'height':0}),
+                                                                                                html.Iframe(id='map_foliumHF',srcDoc = open(format(dict_links_maps.get('vHF')), 'r').read(),style={'border': 'none', 'align': 'center', 'width': '100%', 'height':0}),
+                                                                                                           ],
                                                                                         style={'position':'relative', 'height':heightScreen},className='eight columns')],
                                                                             className='row')]
                                                 
@@ -138,14 +217,14 @@ app.layout = html.Div(style={'backgroundColor': colors['background']},
                     )
 
 
-
+"""
 @app.callback(
     Output(component_id='map_folium', component_property='srcDoc'),
     [Input(component_id='select_maps', component_property='value')])
 def update_map(select_maps):
     new_src = format(dict_links_maps.get(select_maps))
     return open(new_src, 'r').read()
-
+"""
 @app.callback(
     Output(component_id='number', component_property='children'),
     [Input(component_id='select_maps', component_property='value')])
@@ -164,12 +243,62 @@ def update_text(select_maps):
     Output(component_id='boxplot', component_property='src'),
     [Input(component_id='select_maps', component_property='value')])
 def update_boxplot(select_maps):
+    #maps = select_maps
+    #ding = dict_links_boxplot.get(maps)
+    #ding2 = format(ding)
+    #new_src = ding2
     new_src = format(dict_links_boxplot.get(select_maps))
     return new_src
 
+@app.callback(
+    Output(component_id='map_foliumsites', component_property='height'),
+    [Input(component_id='select_maps', component_property='value')])
+def update_mapsites(select_maps):
+    testje = format(dict_links_percentage_sites.get((select_maps)))
+    return testje
+"""
+@app.callback(
+    [Output(component_id='map_foliumLearnC', component_property='height'),],
+    [Input(component_id='select_maps', component_property='value')])
+def update_mapLearnC(select_maps):
+    testje = format(dict_links_percentage_vLearnC.get((select_maps)))
+    return testje
 
+@app.callback(
+    [Output(component_id='map_foliumWomenFS', component_property='height'),],
+    [Input(component_id='select_maps', component_property='value')])
+def update_mapWomenFS(select_maps):
+    testje = format(dict_links_percentage_vWFS.get((select_maps)))
+    return testje
 
+@app.callback(
+    [Output(component_id='map_foliumChildFS', component_property='height'),],
+    [Input(component_id='select_maps', component_property='value')])
+def update_mapsChildFS(select_maps):
+    testje = format(dict_links_percentage_vCFS.get((select_maps)))
+    return testje
 
+@app.callback(
+    [Output(component_id='map_foliumWASH', component_property='height'),],
+    [Input(component_id='select_maps', component_property='value')])
+def update_mapsWASH(select_maps):
+    testje = format(dict_links_percentage_vWASH.get((select_maps)))
+    return testje
+    
+@app.callback(
+    [Output(component_id='map_foliumNC', component_property='height'),],
+    [Input(component_id='select_maps', component_property='value')])
+def update_mapsNC(select_maps):
+    testje = format(dict_links_percentage_vNC.get((select_maps)))
+    return testje
+    
+@app.callback(
+    [Output(component_id='map_foliumHF', component_property='height'),],
+    [Input(component_id='select_maps', component_property='value')])
+def update_mapsHF(select_maps):
+    testje = format(dict_links_percentage_vHF.get((select_maps)))
+    return testje
+"""
 external_css = [
     # Normalize the CSS
     "https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css",
