@@ -50,7 +50,18 @@ colors = {
 }
 
 app.layout = html.Div(style={'backgroundColor': colors['background']},
-                             children=[
+                             children=[html.Div(className="banner", 
+                                                children=[html.Div(className='container scalable', 
+                                                                   style={'textAlign':'left'}, 
+                                                                   children=[html.H2(html.A('Rohingya Refugee Camp Overview',
+                                                                                            style={'textAlign': 'left',
+                                                                                                   'color': 'white',
+                                                                                                   'fontFamily': 'verdana',
+                                                                                                   'paddingLeft': 0,
+                                                                                                   'paddingTop': 0,
+                                                                                                   'paddingRight': 0,
+                                                                                                   'marginTop':0}))])]),
+                                                         #html.A(html.Img(src="https://s3-us-west-1.amazonaws.com/plotly-tutorials/logo/new-branding/dash-logo-by-plotly-stripe-inverted.png"))
                                         html.Div(className="body", children=[html.Div(dcc.RadioItems(id='select_maps',
                                                                                                     options=[{'label': 'Campsites ', 'value': 'sites'},
                                                                                                              {'label': 'Learning Centers ', 'value': 'vLearnC'},
@@ -71,17 +82,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']},
                                                                                                             html.Iframe(id='circlediagram',src = 'https://plot.ly/~Eekhoorn234/10.embed',style={'border': 'none', 'align': 'center', 'width': '100%', 'height':deel_heightScreen}),
                                                                                                             html.Iframe(id='graph',src = 'https://plot.ly/~Eekhoorn234/10.embed',style={'border': 'none', 'align': 'center', 'width': '100%', 'height':deel_heightScreen})],style={'position':'relative', 'height':heightScreen},className='four columns'),
                                                                                         
-                                                                                        html.Div(children=[html.H6('Rohingya Refugee Camp Overview',
-                                                                                                                          style={'textAlign': 'left',
-                                                                                                                                 'color': 'black',
-                                                                                                                                 'fontSize' : 12,
-                                                                                                                                 'fontFamily': 'verdana',
-                                                                                                                                 'paddingLeft': 0,
-                                                                                                                                 'paddingTop': 0,
-                                                                                                                                 'paddingRight': 0,
-                                                                                                                                 'marginTop':0,
-                                                                                                                                 'borderSize': 0,
-                                                                                                                                 'backgroundColor' : 'white'}),
+                                                                                        html.Div(children=[
                                                                                                            html.Iframe(id='map_folium',srcDoc = open('maps/all_sites.html', 'r').read(),style={'border': 'none', 'align': 'center', 'width': '100%', 'height':heightScreen})],
                                                                                         style={'position':'relative', 'height':heightScreen},className='eight columns')],
                                                                             className='row')]
