@@ -137,14 +137,14 @@ app.layout = html.Div(style={'backgroundColor': colors['background']},
                                                                                                             html.Iframe(id='graph',src = 'https://plot.ly/~Eekhoorn234/10.embed',style={'border': 'none', 'align': 'center', 'width': '100%', 'height':threeeight_heightScreen})],style={'position':'relative', 'height':heightScreen},className='four columns'),
                                                                                         
                                                                                         html.Div(children=[
-                                                                                                html.Iframe(id='map_folium',srcDoc = open(format(dict_links_maps.get('sites')), 'r').read(),style={'border': 'none', 'align': 'center', 'width': '100%', 'height':heightScreen}),
-                                                                                                #html.Iframe(id='map_foliumsites',srcDoc = open(format(dict_links_maps.get('sites')), 'r').read(),style={'border': 'none', 'align': 'center', 'width': '100%'}),
-                                                                                                #html.Iframe(id='map_foliumLearnC',srcDoc = open(format(dict_links_maps.get('vLearnC')), 'r').read(),style={'border': 'none', 'align': 'center', 'width': '100%'}),
+                                                                                                #html.Iframe(id='map_folium',srcDoc = open(format(dict_links_maps.get('sites')), 'r').read(),style={'border': 'none', 'align': 'center', 'width': '100%', 'height':heightScreen}),
+                                                                                                html.Iframe(id='map_foliumsites',srcDoc = open(format(dict_links_maps.get('sites')), 'r').read(),style={'border': 'none', 'padding':'none', 'align': 'center', 'width': '100%'}),
+                                                                                                html.Iframe(id='map_foliumLearnC',srcDoc = open(format(dict_links_maps.get('vLearnC')), 'r').read(),style={'border': 'none','padding':'none', 'align': 'center', 'width': '100%'}),
                                                                                                 #html.Iframe(id='map_foliumWomenFS',srcDoc = open(format(dict_links_maps.get('vWFS')), 'r').read(),style={'border': 'none', 'align': 'center', 'width': '100%'}),
-                                                                                                #html.Iframe(id='map_foliumChildFS',srcDoc = open(format(dict_links_maps.get('vCFS')), 'r').read(),style={'border': 'none', 'align': 'center', 'width': '100%'}),
-                                                                                                #html.Iframe(id='map_foliumWASH',srcDoc = open(format(dict_links_maps.get('vWASH')), 'r').read(),style={'border': 'none', 'align': 'center', 'width': '100%'}),
-                                                                                                #html.Iframe(id='map_foliumNC',srcDoc = open(format(dict_links_maps.get('vNC')), 'r').read(),style={'border': 'none', 'align': 'center', 'width': '100%'}),
-                                                                                                #html.Iframe(id='map_foliumHF',srcDoc = open(format(dict_links_maps.get('vHF')), 'r').read(),style={'border': 'none', 'align': 'center', 'width': '100%'}),
+                                                                                                html.Iframe(id='map_foliumChildFS',srcDoc = open(format(dict_links_maps.get('vCFS')), 'r').read(),style={'border': 'none','padding':'none', 'align': 'center', 'width': '100%'}),
+                                                                                                html.Iframe(id='map_foliumWASH',srcDoc = open(format(dict_links_maps.get('vWASH')), 'r').read(),style={'border': 'none','padding':'none', 'align': 'center', 'width': '100%'}),
+                                                                                                html.Iframe(id='map_foliumNC',srcDoc = open(format(dict_links_maps.get('vNC')), 'r').read(),style={'border': 'none','padding':'none', 'align': 'center', 'width': '100%'}),
+                                                                                                html.Iframe(id='map_foliumHF',srcDoc = open(format(dict_links_maps.get('vHF')), 'r').read(),style={'border': 'none','padding':'none', 'align': 'center', 'width': '100%'}),
                                                                                                            ],
                                                                                         style={'position':'relative', 'height':heightScreen},className='eight columns')],
                                                                             className='row')]
@@ -154,14 +154,14 @@ app.layout = html.Div(style={'backgroundColor': colors['background']},
                     )
 
 
-
+"""
 @app.callback(
     Output(component_id='map_folium', component_property='srcDoc'),
     [Input(component_id='select_maps', component_property='value')])
 def update_map(select_maps):
     new_src = format(dict_links_maps.get(select_maps))
     return open(new_src, 'r').read()
-
+"""
 @app.callback(
     Output(component_id='number', component_property='children'),
     [Input(component_id='select_maps', component_property='value')])
@@ -182,7 +182,7 @@ def update_text(select_maps):
 def update_boxplot(select_maps):
     new_src = format(dict_links_boxplot.get(select_maps))
     return new_src
-"""
+
 @app.callback(
     Output(component_id='map_foliumsites', component_property='height'),
     [Input(component_id='select_maps', component_property='value')])
@@ -201,7 +201,103 @@ def update_mapsites(select_maps):
         return 0
     else:
         return 0
-
+    
+@app.callback(
+    Output(component_id='map_foliumLearnC', component_property='height'),
+    [Input(component_id='select_maps', component_property='value')])
+def update_mapLearnC(select_maps):
+    if select_maps == 'vLearnC':
+        return heightScreen
+    elif select_maps == 'sites':
+        return 0
+    elif select_maps == 'vCFS':
+        return 0
+    elif select_maps == 'vWASH':
+        return 0
+    elif select_maps == 'vNC':
+        return 0
+    elif select_maps == 'vHF':
+        return 0
+    else:
+        return 0
+    
+@app.callback(
+    Output(component_id='map_foliumChildFS', component_property='height'),
+    [Input(component_id='select_maps', component_property='value')])
+def update_mapChildFS(select_maps):
+    if select_maps == 'vCFS':
+        return heightScreen
+    elif select_maps == 'vLearnC':
+        return 0
+    elif select_maps == 'sites':
+        return 0
+    elif select_maps == 'vWASH':
+        return 0
+    elif select_maps == 'vNC':
+        return 0
+    elif select_maps == 'vHF':
+        return 0
+    else:
+        return 0
+    
+@app.callback(
+    Output(component_id='map_foliumWASH', component_property='height'),
+    [Input(component_id='select_maps', component_property='value')])
+def update_mapWASH(select_maps):
+    if select_maps == 'vWASH':
+        return heightScreen
+    elif select_maps == 'vLearnC':
+        return 0
+    elif select_maps == 'vCFS':
+        return 0
+    elif select_maps == 'sites':
+        return 0
+    elif select_maps == 'vNC':
+        return 0
+    elif select_maps == 'vHF':
+        return 0
+    else:
+        return 0
+    
+@app.callback(
+    Output(component_id='map_foliumNC', component_property='height'),
+    [Input(component_id='select_maps', component_property='value')])
+def update_mapNC(select_maps):
+    if select_maps == 'vNC':
+        return heightScreen
+    elif select_maps == 'vLearnC':
+        return 0
+    elif select_maps == 'vCFS':
+        return 0
+    elif select_maps == 'vWASH':
+        return 0
+    elif select_maps == 'sites':
+        return 0
+    elif select_maps == 'vHF':
+        return 0
+    else:
+        return 0
+    
+@app.callback(
+    Output(component_id='map_foliumHF', component_property='height'),
+    [Input(component_id='select_maps', component_property='value')])
+def update_mapHF(select_maps):
+    if select_maps == 'vHF':
+        return heightScreen
+    elif select_maps == 'vLearnC':
+        return 0
+    elif select_maps == 'vCFS':
+        return 0
+    elif select_maps == 'vWASH':
+        return 0
+    elif select_maps == 'vNC':
+        return 0
+    elif select_maps == 'sites':
+        return 0
+    else:
+        return 0
+  
+"""
 @app.callback(
     Output(component_id='map_foliumLearnC', component_property='height'),
     [Input(component_id='select_maps', component_property='value')])
